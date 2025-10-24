@@ -1,11 +1,12 @@
 using System.Data;
 using Microsoft.Extensions.Options;
+using Models.Dto.V1.Requests;
 using Npgsql;
 using WebApplication1.DAL.Models;
 
 namespace WebApplication1.DAL;
 
-public class UnitOfWork(IOptions<DbSettings> dbSettings): IDisposable
+public class UnitOfWork(IOptions<DbSettings> dbSettings) : IDisposable
 {
     private NpgsqlConnection _connection;
     
@@ -20,6 +21,7 @@ public class UnitOfWork(IOptions<DbSettings> dbSettings): IDisposable
         
         dataSource.MapComposite<V1OrderDal>("v1_order");
         dataSource.MapComposite<V1OrderItemDal>("v1_order_item");
+        dataSource.MapComposite<V1AuditLogOrderDal>("v1_audit_log_order");
        
         _connection = dataSource.Build().CreateConnection();
         _connection.StateChange += (sender, args) =>

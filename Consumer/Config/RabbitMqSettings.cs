@@ -1,6 +1,4 @@
-using RabbitMQ.Client;
-
-namespace WebApplication1.Config;
+namespace Consumer.Config;
 
 public class RabbitMqSettings
 {

@@ -3,7 +3,7 @@ using Models.Dto.V1.Requests;
 
 namespace WebApplication1.Validators;
 
-public class V1CreateOrderRequestValidator: AbstractValidator<V1CreateOrderRequest>
+public class V1CreateOrderRequestValidator : AbstractValidator<V1CreateOrderRequest>
 {
     public V1CreateOrderRequestValidator()
     {

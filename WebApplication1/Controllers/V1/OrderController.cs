@@ -9,7 +9,7 @@ namespace WebApplication1.Controllers.V1;
 
 
 [Route("api/v1/order")]
-public class OrderController(OrderService orderService,ValidatorFactory validatorFactory): ControllerBase
+public class OrderController(OrderService orderService,ValidatorFactory validatorFactory) : ControllerBase
 {
     [HttpPost("batch-create")]
     public async Task<ActionResult<V1CreateOrderResponse>> V1BatchCreate([FromBody] V1CreateOrderRequest request, CancellationToken token)
