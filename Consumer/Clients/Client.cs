@@ -7,7 +7,7 @@ namespace Consumer.Clients;
 
 public class OmsClient(HttpClient client)
 {
-    public async Task<V1AuditLogOrderResponse> LogOrder(V1AuditLogOrderRequest request, CancellationToken token)
+    public async Task<V1AuditLogOrderResponse> LogOrder(V1CreateAuditLogRequest request, CancellationToken token)
     {
         var msg = await client.PostAsync("api/v1/audit/log-order/batch-create", new StringContent(request.ToJson(), Encoding.UTF8, "application/json"), token);
         if (msg.IsSuccessStatusCode)
