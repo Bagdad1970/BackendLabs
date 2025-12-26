@@ -1,36 +1,38 @@
+using Messages;
+using Microsoft.Extensions.Options;
 using Models.Dto.Common;
+using WebApplication1.BLL.Models;
+using WebApplication1.Config;
 using WebApplication1.DAL;
 using WebApplication1.DAL.Interfaces;
 using WebApplication1.DAL.Models;
 
 namespace WebApplication1.BLL.Services;
 
-public class AuditLogService(UnitOfWork unitOfWork, IAuditLogOrderRepository auditLogOrderRepository)
-{
-    public async Task<AuditLogOrderUnit[]> BatchInsert(AuditLogOrderUnit[] auditLogOrderUnits, CancellationToken token)
+public class AuditLogService(UnitOfWork unitOfWork, IAuditLogOrderRepository auditLogOrderRepository){
+    public async Task<AuditLogOrderUnit[]> BatchInsert(AuditLogOrderUnit[] logUnits, CancellationToken token)
     {
         var now = DateTimeOffset.UtcNow;
         await using var transaction = await unitOfWork.BeginTransactionAsync(token);
 
         try
         {
-            var logs = auditLogOrderUnits.Select(o => new V1AuditLogOrderDal
+            var dalModels = logUnits.Select(x => new V1AuditLogOrderDal
             {
-                OrderId = o.OrderId,
-                OrderItemId = o.OrderItemId,
-                CustomerId = o.CustomerId,
-                OrderStatus = o.OrderStatus,
+                OrderId = x.OrderId,
+                OrderItemId = x.OrderItemId,
+                CustomerId = x.CustomerId,
+                OrderStatus = x.OrderStatus,
                 CreatedAt = now,
                 UpdatedAt = now
             }).ToArray();
 
-            var insertedAuditLogOrders = await auditLogOrderRepository.BulkInsert(logs, token);
-            
+            var insertedLogs = await auditLogOrderRepository.BulkInsert(dalModels, token);
+
             await transaction.CommitAsync(token);
             
-            var result = insertedAuditLogOrders.Select(x => new AuditLogOrderUnit
+            var result = insertedLogs.Select(x => new AuditLogOrderUnit
             {
-                Id = x.Id,
                 OrderId = x.OrderId,
                 OrderItemId = x.OrderItemId,
                 CustomerId = x.CustomerId,
@@ -41,7 +43,7 @@ public class AuditLogService(UnitOfWork unitOfWork, IAuditLogOrderRepository aud
 
             return result;
         }
-        catch (Exception e) 
+        catch
         {
             await transaction.RollbackAsync(token);
             throw;

@@ -1,6 +1,6 @@
 ﻿services:
   postgres:
-    image: postgres
+    image: postgres:17
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=mypassword
@@ -52,7 +52,7 @@
       - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-
+  
   webapi:
     build:
       context: .

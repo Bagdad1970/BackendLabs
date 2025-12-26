@@ -6,7 +6,7 @@ using WebApplication1.DAL.Models;
 
 namespace WebApplication1.DAL;
 
-public class UnitOfWork(IOptions<DbSettings> dbSettings) : IDisposable
+public class UnitOfWork(IOptions<DbSettings> dbSettings): IDisposable
 {
     private NpgsqlConnection _connection;
     
@@ -18,7 +18,6 @@ public class UnitOfWork(IOptions<DbSettings> dbSettings) : IDisposable
         }
         
         var dataSource = new NpgsqlDataSourceBuilder(dbSettings.Value.ConnectionString);
-        
         dataSource.MapComposite<V1OrderDal>("v1_order");
         dataSource.MapComposite<V1OrderItemDal>("v1_order_item");
         dataSource.MapComposite<V1AuditLogOrderDal>("v1_audit_log_order");

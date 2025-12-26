@@ -19,17 +19,6 @@ public class InitAuditLogs : Migration {
             );
 
             create index if not exists idx_audit_log_order_order_id on audit_log_order(order_id);
-            create index if not exists idx_audit_log_order_customer_id on audit_log_order(customer_id);
-
-            create type v1_audit_log_order as (
-                id bigint,
-                order_id bigint,
-                order_item_id bigint,
-                customer_id bigint,
-                order_status text,
-                created_at timestamp with time zone,
-                updated_at timestamp with time zone
-            );
         ";
         
         Execute.Sql(sql);

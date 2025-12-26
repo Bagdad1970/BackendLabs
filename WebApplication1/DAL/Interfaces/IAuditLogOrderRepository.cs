@@ -5,5 +5,7 @@ namespace WebApplication1.DAL.Interfaces;
 public interface IAuditLogOrderRepository
 {
     Task<V1AuditLogOrderDal[]> BulkInsert(V1AuditLogOrderDal[] model, CancellationToken token);
+    Task<V1UpdateOrderDal[]> BulkUpdate(V1UpdateOrderDal[] model, CancellationToken token);
+    Task<V1AuditLogOrderDal[]> Query(QueryAuditLogOrderDalModel model, CancellationToken token);
     
 }
