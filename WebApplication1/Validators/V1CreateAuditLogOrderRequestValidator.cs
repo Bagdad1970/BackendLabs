@@ -1,13 +1,15 @@
+using Common;
 using FluentValidation;
 using Models.Dto.V1.Requests;
 using Models.Dto.V1.Responses;
 
 namespace WebApplication1.Validators;
 
-public class V1CreateAuditLogOrderRequestValidator : AbstractValidator<V1AuditLogOrderRequest>
+public class V1CreateAuditLogOrderRequestValidator : AbstractValidator<V1CreateAuditLogRequest>
 {
     public V1CreateAuditLogOrderRequestValidator()
     {
+        RuleFor(x => x.Orders).NotEmpty();
         RuleForEach(x => x.Orders)
             .NotNull();
         RuleForEach(x => x.Orders)
@@ -24,6 +26,7 @@ public class V1CreateAuditLogOrderRequestValidator : AbstractValidator<V1AuditLo
                     .WithMessage("CustomerId must be greater than 0");
                 order.RuleFor(o => o.OrderStatus)
                     .NotEmpty()
+                    .IsEnumName(typeof(OrderStatus))
                     .WithMessage("OrderStatus must not be empty");
             });
     }

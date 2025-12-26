@@ -15,7 +15,7 @@ public class RabbitMqService(IOptions<RabbitMqSettings> settings)
         await using var connection = await _factory.CreateConnectionAsync(token);
         await using var channel = await connection.CreateChannelAsync(cancellationToken: token);
         await channel.QueueDeclareAsync(    
-            queue: queue, 
+            queue: queue,
             durable: false,
             exclusive: false,
             autoDelete: false,
@@ -32,5 +32,7 @@ public class RabbitMqService(IOptions<RabbitMqSettings> settings)
                 body: body,
                 cancellationToken: token);
         }
+        
+        
     }
 }

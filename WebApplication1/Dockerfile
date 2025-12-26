@@ -1,23 +1,24 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
+﻿FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY ["WebApplication1/WebApplication1.csproj", "WebApplication1/"]
+
+COPY Common/Common.csproj Common/
+COPY Messages/Messages.csproj Messages/
+COPY Migrations/Migrations.csproj Migrations/
+COPY Models/Models.csproj Models/
+COPY WebApplication1/WebApplication1.csproj WebApplication1/
+
 RUN dotnet restore "WebApplication1/WebApplication1.csproj"
-COPY . .
-WORKDIR "/src/WebApplication1"
-RUN dotnet build "./WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+COPY Common/ Common/
+COPY Messages/ Messages/
+COPY Migrations/ Migrations/
+COPY Models/ Models/
+COPY WebApplication1/ WebApplication1/
 
-FROM base AS final
+WORKDIR /src/WebApplication1
+RUN dotnet publish -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "WebApplication1.dll"]

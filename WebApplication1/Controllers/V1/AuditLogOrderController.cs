@@ -13,9 +13,9 @@ namespace WebApplication1.Controllers.V1;
 public class AuditLogOrderController(AuditLogService auditLogService, ValidatorFactory validatorFactory) : ControllerBase
 {
     [HttpPost("batch-create")]
-    public async Task<ActionResult<V1AuditLogOrderResponse>> V1BatchCreate([FromBody] V1AuditLogOrderRequest request, CancellationToken token)
+    public async Task<ActionResult<V1AuditLogOrderResponse>> V1BatchCreate([FromBody] V1CreateAuditLogRequest request, CancellationToken token)
     {
-        var validationResult = await validatorFactory.GetValidator<V1AuditLogOrderRequest>().ValidateAsync(request, token);
+        var validationResult = await validatorFactory.GetValidator<V1CreateAuditLogRequest>().ValidateAsync(request, token);
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.ToDictionary());

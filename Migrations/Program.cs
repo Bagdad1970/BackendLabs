@@ -24,6 +24,7 @@ namespace Migrations {
 
             // Получаем строку подключения из конфига `appsettings.{Environment}.json`
             var connectionString = config["DbSettings:MigrationConnectionString"];
+            Console.WriteLine($"Migrating database '{connectionString}'");
             var migrationRunner = new MigratorRunner(connectionString);
 
             // Мигрируемся

@@ -5,7 +5,7 @@ using Models.Dto.V1.Responses;
 
 namespace Consumer.Clients;
 
-public class OmsClient(HttpClient client)
+public class Client(HttpClient client)
 {
     public async Task<V1AuditLogOrderResponse> LogOrder(V1CreateAuditLogRequest request, CancellationToken token)
     {
